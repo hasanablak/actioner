@@ -1,5 +1,31 @@
 ### Overview
-The **ActionQueue** class is designed to manage a queue of actions, which can be executed in a hierarchical manner. It supports various action types, such as navigation, toast messages, dialogs, and links.
+The **ActionQueue** class is designed as a backend service to manage user interactions and trigger sequential actions. Instead of executing a single operation in isolation, it allows different workflows to be combined dynamically.
+
+For example, in a banking application where a document needs to be approved by a customer:
+1. A **notification (NotificationAction)** is sent to inform the user.
+2. If the user opens the app, a **dialog (DialogAction)** appears with options:
+   - "I want to read the document" → The user is navigated to the document page via **NavigationAction**.
+   - "Sign it directly" → The system executes an **XHRAction** (to be implemented in future versions) to complete the process.
+
+This system enables actions to form a chain rather than being executed as isolated events. The **ActionQueue** class streamlines this workflow, ensuring flexibility and scalability for various business logic scenarios.
+
+### Supported Scenarios
+#### 1. Handling Incoming Messages
+When a new message arrives, the backend can trigger a **NotificationAction** to alert the user. If the user clicks on the notification, a **NavigationAction** redirects them to the messaging screen automatically.
+
+#### 2. Multi-Step User Confirmation
+In cases where the user needs to approve or reject an action, a **DialogAction** can be used. The dialog presents options, each of which may trigger further actions:
+- Accepting an agreement may lead to a **NavigationAction** for reviewing details.
+- Rejecting may trigger a **ToastAction** confirming the decision.
+
+#### 3. Dynamic UI Responses
+The system can dynamically update the UI based on user interactions. For instance:
+- A **ToastAction** can be used to display real-time success or error messages.
+- A **LinkAction** allows users to be redirected to external resources.
+
+These scenarios highlight how **ActionQueue** enables seamless, structured user interaction flows in applications.
+
+
 
 ### Features
 - Support Standard Markdown / CommonMark and GFM(GitHub Flavored Markdown);
